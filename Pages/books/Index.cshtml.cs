@@ -36,19 +36,14 @@ searchString)
 
             CurrentFilter = searchString;
             BookD.Books = await _context.Book
+             .Include(b => b.Author)
             .Include(b => b.Publisher)
             .Include(b => b.BookCategories)
             .ThenInclude(b => b.Category)
             .AsNoTracking()
             .OrderBy(b => b.Title)
             .ToListAsync();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                BookD.Books = BookD.Books.Where(s => s.Author.FirstName.Contains(searchString)
-
-               || s.Author.LastName.Contains(searchString)
-               || s.Title.Contains(searchString));
-            }
+            
                 if (id != null)
             {
                 BookID = id.Value;
@@ -67,6 +62,13 @@ searchString)
                    s.Author.FullName);
                     break;
 
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                BookD.Books = BookD.Books.Where(s => s.Author.FirstName.Contains(searchString)
+
+               || s.Author.LastName.Contains(searchString)
+               || s.Title.Contains(searchString));
             }
 
         }

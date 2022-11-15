@@ -18,13 +18,18 @@ namespace Nistoor_Sergiu_Lab2.Pages.books
         {
             _context = context;
         }
+       
 
         public IActionResult OnGet()
         {
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
+            var authorList = _context.Author.Select(x => new
+            {
+                x.ID,
+                FullName = x.LastName + " " + x.FirstName
+            });
+            ViewData["AuthorID"] = new SelectList(authorList, "ID", "FullName");
+            ViewData["PublisherID"] = new SelectList(_context.Publisher, "ID",
 "PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-"FullName");
             var book = new Book();
             book.BookCategories = new List<BookCategory>();
             PopulateAssignedCategoryData(_context, book);

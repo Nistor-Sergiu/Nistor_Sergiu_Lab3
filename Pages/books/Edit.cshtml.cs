@@ -42,10 +42,14 @@ namespace Nistoor_Sergiu_Lab2.Pages.books
             }
             PopulateAssignedCategoryData(_context, Book);
             Book = book;
-            ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID",
+            var authorList = _context.Author.Select(x => new
+            {
+                x.ID,
+                FullName = x.LastName + " " + x.FirstName
+            });
+            ViewData["PublisherID"] = new SelectList(_context.Publisher, "ID",
 "PublisherName");
-            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID",
-"FullName");
+            ViewData["AuthorID"] = new SelectList(authorList, "ID", "FullName");
             return Page();
         }
 
